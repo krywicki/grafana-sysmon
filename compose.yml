@@ -1,0 +1,27 @@
+
+services:
+  prometheus:
+    image: prom/prometheus:v3.5.4
+    command:
+      - --config.file=/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=7d
+    ports:
+      - "9090:9090"
+    network_mode: host
+    volumes:
+      - ./prometheus.yml:/prometheus/prometheus.yml:ro
+
+  grafana:
+    image: grafana/grafana:11.6.16
+    network_mode: host
+    ports:
+      - "9000:9000"
+    environment:
+      GF_SERVER_HTTP_PORT: 9000
+    volumes:
+      # configs to point to dashboards
+      - ./grafana-dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml:ro
+      # configs for data sources
+      - ./grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
+      # dashboards directory
+      - ./grafana-dashboards:/grafana/dashboards:ro

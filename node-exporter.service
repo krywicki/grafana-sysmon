@@ -1,0 +1,14 @@
+[Unit]
+Description=Node-Exporter Service. Exports node/machine statistics.
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=exec
+WorkingDirectory=/opt/system-mon/node_exporter
+ExecStart=/opt/system-mon/node_exporter/node_exporter
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
